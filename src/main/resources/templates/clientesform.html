@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<link rel='shortcut icon' type='image/x-icon' href="#" th:href="@{/imgs/favicon.ico}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/slate/bootstrap.min.css" />
+<link rel="stylesheet" href="#" th:href="@{/css/sidebar.css}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title th:text="${titulo}"></title>
+</head>
+<body>
+
+	   <div id="wrapper">
+
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand"><a href="#" th:href="@{/}">
+						<h3>
+							<b><i><span class="text-info">IRIDIO crm</span></i></b>
+						</h3>
+				</a></li>
+				<li><a href="#" th:href="@{/clientes/crearcliente}">Crear cliente</a></li>
+				<li><a href="#" th:href="@{/clientes/verclientes}">Ver clientes</a></li>
+				<li><a href="#" th:href="@{/buscar/buscarform}">Registrar LLamada</a></li>
+				<li><a href="#" th:href="@{/llamadas/listarllamadas}">Ver LLamadas</a></li>
+			</ul>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+
+		<!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+					<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">
+						<img src="#" th:src="@{/imgs/menu.png}"/>
+					</a>
+		<!-- ****************************************************************************** -->
+
+	<div class="well" style="text-align:center; margin:auto; max-width: 700px; padding-left:  30px; padding-right: 30px; padding-top:  10px; padding-bottom: 30px;">
+	
+			<div  style="text-align:left; margin:auto;">
+
+				<form class="form-horizontal" action="#" th:action="@{/clientes/addCliente}" th:object="${cliente}" method="post">
+					<fieldset>
+						<legend th:text="${titulo}"></legend>
+						<p th:if="${cliente.id != 0}"> Nº Cliente: <span th:text="${cliente.id}"></span></p>
+						
+						<div class="alert alert-dismissible alert-danger" th:if="${#fields.hasErrors()}">  
+						  	<strong>Se han encontrado errores</strong>, por favor corrige la información y reenvía el formulario.
+						</div>
+						
+						<div class="form-group">
+						
+							<!-- Campos  ocultos para propagar id y listado de llamadas si existen -->
+							<input type="hidden" th:field="*{id}"></input>	
+							<span th:if="${llamadas != null}">
+								<input type="hidden" th:field="*{llamadas}"></input>
+							</span>
+												
+							<label for="nombre" class="col-lg-2 control-label">Nombre:</label>
+							<div class="col-lg-10">
+								<input type="text" class="form-control" id="nombre"
+									placeholder="Nombre" th:field="*{nombre}" />								
+								<p class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="dni" class="col-lg-2 control-label">NIF/CIF:</label>
+							<div class="col-lg-10" style="max-width: 200px;">
+								<input type="text" class="form-control" id="dni"
+									placeholder="NIF/CIF" th:field="*{dni}"/>
+								<p class="text-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></p>							
+								
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-2 control-label">Tipo:</label>
+							<div class="col-lg-10">
+								<div class="radio">
+									<label> <input type="radio" name="optionsRadios" th:field="*{tipoCliente}"
+										id="particular" value="Particular" /> Particular
+									</label>
+								</div>
+								<div class="radio">
+									<label> <input type="radio" name="optionsRadios" th:field="*{tipoCliente}"
+										id="autonomo" value="Autónomo" /> Autónomo
+									</label>
+								</div>
+								<div class="radio">
+									<label> <input type="radio" name="optionsRadios" th:field="*{tipoCliente}"
+										id="empresa" value="Empresa"/> Empresa
+									</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="telefono" class="col-lg-2 control-label">Teléfono:</label>
+							<div class="col-lg-10" style="max-width: 200px;">
+								<input type="text" class="form-control" id="telefono"
+									placeholder="Teléfono" th:field="*{telefono}"/>
+								<p class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
+									
+							</div>							
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="col-lg-2 control-label">Email:</label>
+							<div class="col-lg-10">
+								<input type="text" class="form-control" id="email"
+									placeholder="Correo electrónico" th:field="*{email}"/>
+								<p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+								
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="direccion" class="col-lg-2 control-label">Dirección:</label>
+							<div class="col-lg-10">
+								<input type="text" class="form-control" id="direccion"
+									placeholder="Dirección postal" th:field="*{direccion}"/>
+								<p class="text-danger" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></p>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="notas" class="col-lg-2 control-label">Notas:</label>
+							<div class="col-lg-10">
+								<input type="text" class="form-control" id="notas"
+									placeholder="Notas (opcional)" th:field="*{notas}"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-lg-10 col-lg-offset-2">								
+								<button type="submit" class="btn btn-primary">Enviar</button>
+								<button type="reset" class="btn btn-default">Limpiar</button>
+							</div>
+						</div>
+
+					</fieldset>
+				</form>
+
+			</div>
+	
+	</div>
+
+
+		<!-- ****************************************************************************** -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+     <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+        
+
+</body>
+</html>
